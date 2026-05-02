@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Klantportaal - Glans en Klasse</title>
+  <style>
+    :root {
+      --ink: #17201d;
+      --muted: #60746d;
+      --line: #d8e4df;
+      --brand: #0f766e;
+      --brand-dark: #0b4f49;
+      --gold: #c9a227;
+      --bg: #f6faf8;
+      --panel: #ffffff;
+      --danger: #b42318;
+      --ok: #147c43;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--ink); background: var(--bg); }
+    header {
+      background: #0b2f2b;
+      color: #fff;
+      padding: 18px clamp(16px, 4vw, 42px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    a { color: inherit; }
+    h1, h2, h3 { margin: 0; }
+    main { padding: 20px clamp(16px, 4vw, 42px) 44px; }
+    .btn {
+      border: 0;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 6px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn.light { background: #fff; color: var(--ink); }
+    .btn.gold { background: var(--gold); color: #111; }
+    .layout { display: grid; grid-template-columns: 330px 1fr; gap: 18px; align-items: start; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    label { display: grid; gap: 6px; font-weight: 800; margin-bottom: 10px; }
+    input, textarea {
+      width: 100%;
+      border: 1px solid #b8c8c3;
+      border-radius: 6px;
+      min-height: 40px;
+      padding: 9px 10px;
+      font: inherit;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    .status { margin-top: 10px; font-weight: 900; }
+    .status.ok { color: var(--ok); }
+    .status.error { color: var(--danger); }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+    .card strong { display: block; font-size: 24px; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .tab.active { background: var(--brand-dark); }
+    .view { display: none; }
+    .view.active { display: block; }
+    .table-wrap { overflow: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+    table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 10px; vertical-align: top; }
+    th { background: #eaf2ef; }
+    .pill { display: inline-flex; padding: 4px 8px; border-radius: 999px; background: #e8f2ef; font-weight: 900; font-size: 12px; }
+    .hidden { display: none !important; }
+    .muted { color: var(--muted); }
+    @media (max-width: 960px) {
+      header { flex-direction: column; align-items: flex-start; }
+      .layout, .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Klantportaal</h1>
+      <div class="muted" id="sessionLine" style="color:#d8ece7">Log in om uw planning te bekijken</div>
+    </div>
+    <div>
+      <a class="btn light" href="index.html">Website</a>
+      <button class="btn gold hidden" id="logoutBtn">Uitloggen</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="layout">
+      <aside class="panel">
+        <form id="loginForm">
+          <h2>Inloggen</h2>
+          <p class="muted">Gebruik het account dat de administratie voor u heeft aangemaakt.</p>
+          <label>Email<input name="email" type="email" required></label>
+          <label>Wachtwoord<input name="wachtwoord" type="password" required></label>
+          <button class="btn" type="submit">Inloggen</button>
+          <div class="status"></div>
+        </form>
+
+        <div id="profileBox" class="hidden">
+          <h2>Mijn gegevens</h2>
+          <div id="profile"></div>
+        </div>
+
+        <form id="contactForm" class="hidden" style="margin-top:18px">
+          <h2>Contact opnemen</h2>
+          <label>Naam<input name="naam" required></label>
+          <label>Email<input name="email" type="email" required></label>
+          <label>Bericht<textarea name="bericht" required></textarea></label>
+          <button class="btn" type="submit">Verstuur bericht</button>
+          <div class="status"></div>
+        </form>
+      </aside>
+
+      <section>
+        <div class="cards">
+          <article class="card"><span>Planning</span><strong id="statPlanning">0</strong></article>
+          <article class="card"><span>Werkorders</span><strong id="statWorkorders">0</strong></article>
+          <article class="card"><span>Open facturen</span><strong id="statInvoices">0</strong></article>
+        </div>
+
+        <div class="panel">
+          <div class="tabs">
+            <button class="btn tab active" data-view="planningView">Planning</button>
+            <button class="btn tab" data-view="workordersView">Werkorders</button>
+            <button class="btn tab" data-view="invoicesView">Facturen</button>
+          </div>
+
+          <div id="planningView" class="view active">
+            <h2>Wanneer komen wij schoonmaken?</h2>
+            <div class="table-wrap"><table id="planningTable"></table></div>
+          </div>
+
+          <div id="workordersView" class="view">
+            <h2>Werkorders</h2>
+            <div class="table-wrap"><table id="workordersTable"></table></div>
+          </div>
+
+          <div id="invoicesView" class="view">
+            <h2>Facturen</h2>
+            <div class="table-wrap"><table id="invoicesTable"></table></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbz7eAcu1ApfSLgUauYeiXXQhUsKd-WYoPb6LnT--pzncAGBuyKkOR3Q-8rNc64ONT91/exec';
+    const state = { token: localStorage.getItem('gk_token') || '', user: null, profile: null };
+
+    async function apiGet(action, params = {}) {
+      const url = new URL(API_URL);
+      url.searchParams.set('action', action);
+      if (state.token) url.searchParams.set('token', state.token);
+      Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+      const response = await fetch(url.toString());
+      const json = await response.json();
+      if (json.status !== 'success') throw new Error(json.message || 'API fout');
+      return json.data;
+    }
+
+    async function apiPost(action, payload = {}) {
+      const body = new URLSearchParams();
+      if (state.token) body.set('token', state.token);
+      Object.entries(payload).forEach(([key, value]) => body.set(key, value ?? ''));
+      const response = await fetch(`${API_URL}?action=${encodeURIComponent(action)}`, { method: 'POST', body });
+      const json = await response.json();
+      if (json.status !== 'success') throw new Error(json.message || 'API fout');
+      return json.data;
+    }
+
+    function formData(form) { return Object.fromEntries(new FormData(form).entries()); }
+    function escapeHtml(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c])); }
+    function setStatus(form, message, ok) {
+      const box = form.querySelector('.status');
+      box.textContent = message;
+      box.className = 'status ' + (ok ? 'ok' : 'error');
+    }
+
+    document.querySelectorAll('.tab').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        button.classList.add('active');
+        document.getElementById(button.dataset.view).classList.add('active');
+      });
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      try {
+        const result = await apiPost('login', formData(form));
+        state.token = result.token;
+        state.user = result.user;
+        localStorage.setItem('gk_token', state.token);
+        setStatus(form, 'Ingelogd', true);
+        await loadPortal();
+      } catch (error) {
+        setStatus(form, error.message, false);
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      try { await apiPost('logout', {}); } catch {}
+      localStorage.removeItem('gk_token');
+      location.reload();
+    });
+
+    document.getElementById('contactForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      try {
+        const result = await apiPost('submitContact', formData(form));
+        form.reset();
+        if (state.profile && state.profile.klant) {
+          form.naam.value = state.profile.klant.naam || '';
+          form.email.value = state.profile.klant.email || '';
+        }
+        setStatus(form, `Bericht ontvangen. Referentie: ${result.id}`, true);
+      } catch (error) {
+        setStatus(form, error.message, false);
+      }
+    });
+
+    async function loadPortal() {
+      const [profile, planning, workorders, invoices] = await Promise.all([
+        apiGet('getMijnProfiel'),
+        apiGet('getMijnPlanning'),
+        apiGet('getMijnWerkorders'),
+        apiGet('getMijnFacturen')
+      ]);
+      state.profile = profile;
+      renderSession(profile);
+      renderPlanning(planning);
+      renderWorkorders(workorders);
+      renderInvoices(invoices);
+      document.getElementById('statPlanning').textContent = planning.length;
+      document.getElementById('statWorkorders').textContent = workorders.length;
+      document.getElementById('statInvoices').textContent = invoices.filter(item => item.status === 'open').length;
+    }
+
+    function renderSession(profile) {
+      const klant = profile.klant || {};
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('profileBox').classList.remove('hidden');
+      document.getElementById('contactForm').classList.remove('hidden');
+      document.getElementById('logoutBtn').classList.remove('hidden');
+      document.getElementById('sessionLine').textContent = klant.naam ? `Ingelogd als ${klant.naam}` : 'Ingelogd';
+      document.getElementById('profile').innerHTML = `
+        <p><strong>${escapeHtml(klant.naam || profile.gebruiker?.email || '')}</strong></p>
+        <p>${escapeHtml(klant.adres || '')}</p>
+        <p>${escapeHtml(klant.email || profile.gebruiker?.email || '')}</p>
+        <p>${escapeHtml(klant.telefoon || '')}</p>
+      `;
+      const contactForm = document.getElementById('contactForm');
+      contactForm.naam.value = klant.naam || '';
+      contactForm.email.value = klant.email || profile.gebruiker?.email || '';
+    }
+
+    function renderPlanning(rows) {
+      renderTable('planningTable', ['datum', 'tijd', 'dienst', 'medewerker', 'status'], rows);
+    }
+
+    function renderWorkorders(rows) {
+      renderTable('workordersTable', ['id', 'planning_id', 'status', 'notities', 'foto_url', 'created_at'], rows);
+    }
+
+    function renderInvoices(rows) {
+      renderTable('invoicesTable', ['id', 'bedrag', 'status', 'pdf_url', 'created_at'], rows.map(row => ({ ...row, bedrag: `€${Number(row.bedrag || 0).toFixed(2)}` })));
+    }
+
+    function renderTable(id, columns, rows) {
+      const table = document.getElementById(id);
+      table.innerHTML = `
+        <thead><tr>${columns.map(col => `<th>${escapeHtml(label(col))}</th>`).join('')}</tr></thead>
+        <tbody>${rows.length ? rows.map(row => `<tr>${columns.map(col => `<td>${cell(col, row[col])}</td>`).join('')}</tr>`).join('') : `<tr><td colspan="${columns.length}">Geen gegevens gevonden.</td></tr>`}</tbody>
+      `;
+    }
+
+    function cell(col, value) {
+      if (col === 'status') return `<span class="pill">${escapeHtml(value || '-')}</span>`;
+      if (col.endsWith('_url') && value) return `<a href="${escapeHtml(value)}" target="_blank" rel="noopener">Openen</a>`;
+      return escapeHtml(value || '');
+    }
+
+    function label(value) {
+      return value.replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    if (state.token) {
+      loadPortal().catch(() => {
+        localStorage.removeItem('gk_token');
+      });
+    }
+  </script>
+</body>
+</html>
