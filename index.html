@@ -1,697 +1,505 @@
 <!doctype html>
-<html lang="nl" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glans en Klasse - Premium Schoonmaakdiensten</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet">
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Glans en Klasse schoonmaakbedrijf. Vraag online een offerte aan, bekijk diensten en log in op het klantportaal.">
+  <title>Glans en Klasse | Schoonmaakbedrijf</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; }
-    body { font-family: 'DM Sans', sans-serif; background: #f9fafb; }
-    .font-heading { font-family: 'Playfair Display', Georgia, serif; }
-    .fade-in { animation: fadeIn 0.6s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .slide-in { animation: slideIn 0.6s ease-out; }
-    @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); }
-    .pulse-dot { animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    .form-status { min-height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 14px; font-weight: 500; }
-    .status-success { background-color: #d1fae5; color: #065f46; }
-    .status-error { background-color: #fee2e2; color: #991b1b; }
-    .status-loading { background-color: #dbeafe; color: #0c4a6e; }
-    .hero-pattern { background: linear-gradient(135deg, rgba(15, 118, 110, 0.05) 0%, rgba(20, 184, 166, 0.02) 100%); }
-    .grid-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    @media (min-width: 768px) { .grid-2x2 { grid-template-columns: repeat(1, 1fr); gap: 16px; } }
-    .chat-bubble { animation: slideIn 0.3s ease-out; }
-    .chat-widget { position: fixed; bottom: 20px; right: 20px; z-index: 50; }
-    @media (min-width: 768px) { .chat-widget { bottom: 24px; right: 24px; } }
-    .chat-panel { position: fixed; bottom: 0; right: 0; top: 0; width: 100%; max-width: 420px; background: white; box-shadow: -2px 0 20px rgba(0,0,0,0.1); animation: slideInRight 0.3s ease-out; }
-    @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-    @media (max-width: 767px) { .chat-panel { max-width: 100%; } }
-    .favorite-heart { transition: all 0.2s ease; cursor: pointer; }
-    .favorite-heart.active { color: #dc2626; }
+    :root {
+      --bg: #ffffff;
+      --text: #000000;
+      --muted: #5f6673;
+      --line: #e5e5e5;
+      --soft: #f7f9fc;
+      --blue: #4da3ff;
+      --blue-dark: #1477d4;
+      --green: #16a34a;
+      --orange: #f59e0b;
+      --red: #dc2626;
+      --shadow: 0 12px 30px rgba(15, 23, 42, .07);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button, .btn { min-height: 44px; }
+    :focus-visible { outline: 3px solid rgba(77, 163, 255, .38); outline-offset: 3px; }
+    .shell { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(229,229,229,.75);
+    }
+    .topbar-inner {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: -.02em;
+      font-size: 18px;
+    }
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #8dc7ff);
+      box-shadow: 0 8px 20px rgba(77,163,255,.25);
+    }
+    .menu-toggle {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after {
+      content: "";
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: #000;
+      border-radius: 99px;
+      position: relative;
+    }
+    .menu-toggle span::before { position: absolute; top: -6px; }
+    .menu-toggle span::after { position: absolute; top: 6px; }
+    .nav {
+      display: none;
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      top: 72px;
+      padding: 10px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .nav.open { display: grid; }
+    .nav a {
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      color: var(--muted);
+      transition: .22s ease;
+    }
+    .nav a:hover, .nav a.active { color: var(--blue-dark); background: #eef7ff; }
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      background: var(--blue);
+      color: #fff;
+      padding: 0 16px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+    }
+    .btn:hover { transform: translateY(-1px) scale(1.01); box-shadow: 0 10px 24px rgba(77,163,255,.22); }
+    .btn.secondary { background: #eef7ff; color: var(--blue-dark); }
+    .hero { padding: 54px 0 28px; }
+    .hero-grid { display: grid; gap: 24px; align-items: center; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 11px;
+      border-radius: 999px;
+      background: #eef7ff;
+      color: var(--blue-dark);
+      font-weight: 900;
+      font-size: 13px;
+    }
+    h1 {
+      margin: 14px 0 14px;
+      font-size: clamp(42px, 12vw, 78px);
+      line-height: .95;
+      letter-spacing: -.045em;
+    }
+    .lead { margin: 0; color: var(--muted); font-size: 18px; max-width: 640px; }
+    .hero-actions { display: grid; gap: 10px; margin-top: 22px; }
+    .hero-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(247,249,252,.9));
+      box-shadow: var(--shadow);
+    }
+    .hero-card img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+    }
+    .quick-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+    .fact { padding: 10px; border-radius: 12px; background: #fff; border: 1px solid var(--line); }
+    .fact strong { display: block; font-size: 20px; }
+    section { padding: 34px 0; }
+    .section-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    h2 { margin: 0; font-size: clamp(28px, 8vw, 42px); line-height: 1; letter-spacing: -.035em; }
+    .muted { color: var(--muted); }
+    .grid { display: grid; gap: 12px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .045);
+      padding: 16px;
+      transition: transform .22s ease, border-color .22s ease;
+    }
+    .card:hover { transform: translateY(-2px); border-color: rgba(77,163,255,.55); }
+    .card h3 { margin: 0 0 8px; font-size: 18px; }
+    .price { color: var(--blue-dark); font-weight: 950; }
+    .forms { display: grid; gap: 12px; }
+    form {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .045);
+    }
+    form h3 { margin: 0 0 12px; }
+    label { display: grid; gap: 6px; margin-bottom: 12px; font-size: 13px; font-weight: 900; }
+    input, select, textarea {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #fff;
+      color: #000;
+      transition: border-color .22s ease, box-shadow .22s ease;
+    }
+    textarea { min-height: 118px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(77,163,255,.14); outline: 0; }
+    .status { margin-top: 10px; font-weight: 900; min-height: 22px; }
+    .status.ok { color: var(--green); }
+    .status.error { color: var(--red); }
+    .company-grid { display: grid; gap: 12px; }
+    .links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .link-chip { padding: 8px 10px; border-radius: 999px; background: #eef7ff; color: var(--blue-dark); font-weight: 900; font-size: 13px; }
+    .stars { color: var(--orange); letter-spacing: 1px; }
+    footer { padding: 26px 0; border-top: 1px solid var(--line); color: var(--muted); }
+    .loading { position: relative; overflow: hidden; color: transparent !important; background: #f2f5f8; border-radius: 10px; }
+    .loading::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.7), transparent);
+      animation: shimmer 1.1s infinite;
+    }
+    @keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+    @media (min-width: 760px) {
+      .menu-toggle { display: none; }
+      .nav { display: flex; position: static; padding: 0; box-shadow: none; border: 0; background: transparent; align-items: center; }
+      .nav a { padding: 8px 10px; }
+      .hero { padding: 78px 0 48px; }
+      .hero-grid { grid-template-columns: 1.05fr .95fr; }
+      .hero-actions { display: flex; }
+      .grid { grid-template-columns: repeat(3, 1fr); }
+      .forms { grid-template-columns: repeat(3, 1fr); }
+      .company-grid { grid-template-columns: 1.2fr .8fr; }
+      .section-head { flex-direction: row; align-items: end; justify-content: space-between; }
+    }
   </style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-  <style>body { box-sizing: border-box; }</style>
- </head>
- <body class="h-full">
-  <div id="app" class="w-full h-full overflow-auto bg-white">
-   <!-- Navigation -->
-   <nav class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-     <div class="flex items-center gap-2">
-      <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
-       <span class="text-white font-bold text-lg">G</span>
-      </div><span class="font-heading text-xl font-bold text-gray-900">Glans <span class="text-blue-600">&amp;</span> Klasse</span>
-     </div>
-     <div class="hidden md:flex gap-8 text-sm font-medium text-gray-700">
-      <a href="#diensten" class="hover:text-blue-600 transition">Diensten</a> <a href="#werkwijze" class="hover:text-blue-600 transition">Werkwijze</a> <a href="#over" class="hover:text-blue-600 transition">Over Ons</a> <a href="#reviews" class="hover:text-blue-600 transition">Reviews</a>
-     </div><a href="#offerte" class="hidden md:inline-flex px-6 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition">Offerte</a>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="index.html" aria-label="Glans en Klasse home">
+        <span class="logo" aria-hidden="true">GK</span>
+        <span data-company-name>Glans en Klasse</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu openen" aria-expanded="false"><span></span></button>
+      <nav class="nav" id="mainNav" aria-label="Hoofdnavigatie">
+        <a class="active" href="index.html">Home</a>
+        <a href="#diensten">Diensten</a>
+        <a href="#offerte">Offerte</a>
+        <a href="#reviews">Reviews</a>
+        <a href="client.html">Klantportaal</a>
+        <a href="admin.html">Admin</a>
+      </nav>
     </div>
-   </nav><!-- Hero Section -->
-   <section class="hero-pattern relative py-20 md:py-32">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center slide-in">
-     <div class="inline-flex items-center gap-2 bg-teal-100 text-teal-700 text-xs font-semibold px-4 py-2 rounded-full mb-6">
-      <span class="pulse-dot w-2 h-2 bg-teal-600 rounded-full"></span> Professioneel • Betrouwbaar • Grondig
-     </div>
-     <h1 id="hero_title" class="font-heading text-5xl md:text-6xl font-bold text-gray-900 mb-6">Glans en Klasse</h1>
-     <p id="hero_subtitle" class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Professionele schoonmaakdiensten voor een stralend resultaat. Wij brengen glans in elk detail.</p>
-     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="#diensten" id="cta_button" class="px-8 py-4 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition shadow-lg inline-flex items-center justify-center gap-2"> Ontdek Diensten <i data-lucide="arrow-right" style="width:18px;height:18px;"></i> </a> <a href="#reviews" class="px-8 py-4 border-2 border-teal-600 text-teal-600 font-semibold rounded-lg hover:bg-teal-50 transition inline-flex items-center justify-center gap-2"> Bekijk Reviews <i data-lucide="star" style="width:18px;height:18px;"></i> </a>
-     </div>
-    </div>
-   </section><!-- Trust Indicators -->
-   <section class="bg-gray-50 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="grid md:grid-cols-4 gap-8 text-center">
-      <div>
-       <p class="font-heading text-4xl font-bold text-teal-600">500+</p>
-       <p class="text-gray-600 mt-2">Tevreden Klanten</p>
-      </div>
-      <div>
-       <p class="font-heading text-4xl font-bold text-teal-600">9+</p>
-       <p class="text-gray-600 mt-2">Jaar Ervaring</p>
-      </div>
-      <div>
-       <p class="font-heading text-4xl font-bold text-teal-600">24h</p>
-       <p class="text-gray-600 mt-2">Offerte Respons</p>
-      </div>
-      <div>
-       <p class="font-heading text-4xl font-bold text-teal-600">4.9⭐</p>
-       <p class="text-gray-600 mt-2">Gemiddelde Rating</p>
-      </div>
-     </div>
-    </div>
-   </section><!-- Services Section with Search & Filter -->
-   <section id="diensten" class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="text-center mb-12">
-      <p class="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-2">Premium diensten</p>
-      <h2 class="font-heading text-4xl font-bold text-gray-900">Onze Diensten</h2>
-     </div><!-- Search & Filter Bar -->
-     <div class="bg-gray-50 rounded-xl p-6 mb-8 sticky top-20 md:top-16 z-30 shadow-sm">
-      <div class="grid md:grid-cols-3 gap-4 mb-6">
-       <div class="relative"><i data-lucide="search" style="width:18px;height:18px;" class="absolute left-3 top-3 text-gray-400"></i> <input type="text" id="search-input" placeholder="Zoek diensten..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-       </div><select id="category-filter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"> <option value="">Alle Categorieën</option> </select> <select id="size-filter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"> <option value="">Alle Maten</option> <option value="XS">XS</option> <option value="S">S</option> <option value="M">M</option> <option value="L">L</option> <option value="XL">XL</option> </select>
-      </div><!-- Price Slider -->
-      <div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">Prijs: €<span id="price-display">0</span> - €800</label> <input type="range" id="price-filter" min="0" max="800" value="800" class="w-full">
-      </div>
-      <div class="flex gap-2"><button id="favorites-toggle" class="px-4 py-2 border border-teal-600 text-teal-600 rounded-lg hover:bg-teal-50 font-medium text-sm inline-flex items-center gap-2"> <i data-lucide="heart" style="width:16px;height:16px;"></i> Favorieten </button> <button id="reset-filters" class="px-4 py-2 text-gray-600 hover:bg-gray-200 rounded-lg font-medium text-sm"> Filters Resetten </button>
-      </div>
-     </div><!-- Services Grid -->
-     <div id="services-grid" class="grid-2x2">
-      <div class="bg-white rounded-xl p-6 border border-gray-200 animate-pulse">
-       <div class="h-6 bg-gray-200 rounded w-2/3 mb-3"></div>
-       <div class="h-4 bg-gray-100 rounded w-full mb-2"></div>
-       <div class="h-4 bg-gray-100 rounded w-5/6"></div>
-      </div>
-     </div>
-    </div>
-   </section><!-- How It Works -->
-   <section id="werkwijze" class="bg-gray-50 py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="text-center mb-16">
-      <p class="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-2">Ons proces</p>
-      <h2 class="font-heading text-4xl font-bold text-gray-900">Hoe Het Werkt</h2>
-     </div>
-     <div class="grid md:grid-cols-4 gap-8">
-      <div class="text-center">
-       <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-xl mx-auto mb-4">
-        1
-       </div>
-       <h3 class="font-heading font-bold text-gray-900 mb-2">Offerte Aanvragen</h3>
-       <p class="text-gray-600 text-sm">Vul het formulier in met uw gegevens en wensen</p>
-      </div>
-      <div class="text-center">
-       <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-xl mx-auto mb-4">
-        2
-       </div>
-       <h3 class="font-heading font-bold text-gray-900 mb-2">Meting &amp; Planning</h3>
-       <p class="text-gray-600 text-sm">We voeren een gratis inspectie uit</p>
-      </div>
-      <div class="text-center">
-       <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-xl mx-auto mb-4">
-        3
-       </div>
-       <h3 class="font-heading font-bold text-gray-900 mb-2">Offerte Ontvangen</h3>
-       <p class="text-gray-600 text-sm">U krijgt een gedetailleerde offerte per email</p>
-      </div>
-      <div class="text-center">
-       <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-xl mx-auto mb-4">
-        4
-       </div>
-       <h3 class="font-heading font-bold text-gray-900 mb-2">Service Start</h3>
-       <p class="text-gray-600 text-sm">We beginnen en houden u op de hoogte</p>
-      </div>
-     </div>
-    </div>
-   </section><!-- About Section -->
-   <section id="over" class="py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div>
-       <div class="aspect-square rounded-2xl bg-gradient-to-br from-teal-100 to-teal-50 flex items-center justify-center text-6xl">
-        ✨
-       </div>
-      </div>
-      <div>
-       <p class="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-2">Wie we zijn</p>
-       <h2 id="about_title" class="font-heading text-4xl font-bold text-gray-900 mb-6">Over Ons</h2>
-       <p id="about_text" class="text-gray-600 leading-relaxed mb-6">Bij Glans en Klasse geloven wij dat een schone omgeving het verschil maakt. Met ons ervaren team leveren wij betrouwbare schoonmaakdiensten aan particulieren en bedrijven door heel Nederland.</p>
-       <div class="grid grid-cols-2 gap-4">
-        <div class="p-4 border-l-4 border-teal-600">
-         <p class="font-bold text-gray-900">Gecertificeerd</p>
-         <p class="text-sm text-gray-600">ISO 9001 erkend</p>
-        </div>
-        <div class="p-4 border-l-4 border-teal-600">
-         <p class="font-bold text-gray-900">Milieuvriendelijk</p>
-         <p class="text-sm text-gray-600">Eco-producten</p>
-        </div>
-       </div>
-      </div>
-     </div>
-    </div>
-   </section><!-- Offerte Section -->
-   <section id="offerte" class="bg-gray-50 py-20">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="text-center mb-12">
-      <h2 class="font-heading text-4xl font-bold text-gray-900 mb-4">Offerte Aanvragen</h2>
-      <p class="text-gray-600">Vul het formulier in en ontvang een gratis offerte binnen 24 uur</p>
-     </div>
-     <form id="quote-form" class="bg-white rounded-lg shadow-lg p-8 space-y-6">
-      <div class="grid md:grid-cols-2 gap-6">
-       <div>
-        <label class="block text-sm font-semibold text-gray-900 mb-2">Naam *</label> <input type="text" name="naam" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent">
-       </div>
-       <div>
-        <label class="block text-sm font-semibold text-gray-900 mb-2">Email *</label> <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent">
-       </div>
-       <div>
-        <label class="block text-sm font-semibold text-gray-900 mb-2">Telefoon *</label> <input type="tel" name="telefoon" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent">
-       </div>
-       <div>
-        <label class="block text-sm font-semibold text-gray-900 mb-2">Type Schoonmaak *</label> <select name="type" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent"> <option value="">Kies een type</option> <option value="woning">Woning</option> <option value="kantoor">Kantoor/Bedrijf</option> <option value="overig">Overig</option> </select>
-       </div>
-       <div>
-        <label class="block text-sm font-semibold text-gray-900 mb-2">Dienst *</label> <select id="dienst_select" name="dienst" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent"> <option value="">Laden...</option> </select>
-       </div>
-       <div>
-        <label class="block text-sm font-semibold text-gray-900 mb-2">Frequentie *</label> <select name="frequentie" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent"> <option value="">Kies frequentie</option> <option value="eenmalig">Eenmalig</option> <option value="wekelijks">Wekelijks</option> <option value="tweewekelijks">Twee wekelijks</option> <option value="maandelijks">Maandelijks</option> </select>
-       </div>
-      </div>
-      <div>
-       <label class="block text-sm font-semibold text-gray-900 mb-2">Beschrijving</label> <textarea name="beschrijving" rows="4" placeholder="Geef meer details over uw project..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent resize-none"></textarea>
-      </div>
-      <div class="form-status" id="quote-status"></div><button type="submit" class="w-full px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition flex items-center justify-center gap-2" id="quote-submit"> <i data-lucide="send" style="width:18px;height:18px;"></i> Offerte Versturen </button>
-     </form>
-    </div>
-   </section><!-- Reviews Section -->
-   <section id="reviews" class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="text-center mb-16">
-      <p class="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-2">Klantfeedback</p>
-      <h2 class="font-heading text-4xl font-bold text-gray-900">Reviews Van Klanten</h2>
-     </div>
-     <div id="reviews-grid" class="grid-2x2 mb-16">
-      <div class="bg-white rounded-lg p-8 border border-gray-200 card-hover">
-       <div class="text-yellow-400 mb-3 text-xl">
-        ★★★★★
-       </div>
-       <p class="text-gray-600 mb-4 italic">"Laden..."</p>
-       <p class="font-semibold text-gray-900">Reviews laden...</p>
-      </div>
-     </div><!-- Review Form -->
-     <div class="bg-gray-50 rounded-lg p-8 max-w-2xl mx-auto">
-      <h3 class="font-heading text-2xl font-bold text-gray-900 mb-6">Plaats Uw Review</h3>
-      <form id="review-form" class="space-y-4">
-       <div class="grid md:grid-cols-2 gap-4">
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
         <div>
-         <label class="block text-sm font-semibold text-gray-900 mb-2">Naam *</label> <input type="text" name="naam" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent">
+          <span class="eyebrow">Schoonmaak, planning en administratie in een helder systeem</span>
+          <h1 data-company-name>Glans en Klasse</h1>
+          <p class="lead">Professionele schoonmaak voor woningen, kantoren en opleveringen. Vraag direct een offerte aan, bekijk diensten of log in op uw klantportaal.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#offerte">Offerte aanvragen</a>
+            <a class="btn secondary" href="client.html">Klantportaal openen</a>
+          </div>
         </div>
-        <div>
-         <label class="block text-sm font-semibold text-gray-900 mb-2">Rating *</label> <select name="rating" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent"> <option value="5">⭐⭐⭐⭐⭐ (5 sterren)</option> <option value="4">⭐⭐⭐⭐ (4 sterren)</option> <option value="3">⭐⭐⭐ (3 sterren)</option> </select>
-        </div>
-       </div>
-       <div>
-        <label class="block text-sm font-semibold text-gray-900 mb-2">Uw Bericht *</label> <textarea name="bericht" rows="3" required placeholder="Deel uw ervaring..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent resize-none"></textarea>
-       </div>
-       <div class="form-status" id="review-status"></div><button type="submit" class="w-full px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition"> Review Versturen </button>
-      </form>
-     </div>
-    </div>
-   </section><!-- Contact & Company Info -->
-   <section id="contact" class="bg-gray-900 text-white py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-     <div class="grid md:grid-cols-2 gap-12 mb-12">
-      <div>
-       <h2 id="contact_title" class="font-heading text-3xl font-bold mb-6">Neem Contact Op</h2>
-       <p class="text-gray-300 mb-8">Heeft u vragen? Wij staan altijd voor u klaar en nemen snel contact op.</p>
-       <div id="company-info" class="space-y-4">
-        <div class="flex items-start gap-3">
-         <i data-lucide="phone" style="width:20px;height:20px;color:#14b8a6;margin-top:2px;"></i>
-         <div>
-          <p class="font-semibold" id="company-phone">Laden...</p>
-         </div>
-        </div>
-        <div class="flex items-start gap-3">
-         <i data-lucide="mail" style="width:20px;height:20px;color:#14b8a6;margin-top:2px;"></i>
-         <div>
-          <p class="font-semibold" id="company-email">Laden...</p>
-         </div>
-        </div>
-        <div class="flex items-start gap-3">
-         <i data-lucide="map-pin" style="width:20px;height:20px;color:#14b8a6;margin-top:2px;"></i>
-         <div id="company-address" class="font-semibold">
-          Laden...
-         </div>
-        </div>
-        <div class="flex items-start gap-3">
-         <i data-lucide="clock" style="width:20px;height:20px;color:#14b8a6;margin-top:2px;"></i>
-         <div id="company-hours" class="font-semibold">
-          Laden...
-         </div>
-        </div>
-       </div>
+        <aside class="hero-card" aria-label="Schoonmaak overzicht">
+          <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=78" alt="Professionele schoonmaakmaterialen" loading="lazy">
+          <div class="quick-facts">
+            <div class="fact"><strong id="serviceCount">0</strong><span class="muted">Diensten</span></div>
+            <div class="fact"><strong id="reviewCount">0</strong><span class="muted">Reviews</span></div>
+            <div class="fact"><strong>24u</strong><span class="muted">Reactie</span></div>
+          </div>
+        </aside>
       </div>
-      <form id="contact-form" class="space-y-4">
-       <div>
-        <label class="block text-sm font-semibold mb-2">Naam *</label> <input type="text" name="naam" required class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-       </div>
-       <div>
-        <label class="block text-sm font-semibold mb-2">Email *</label> <input type="email" name="email" required class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
-       </div>
-       <div>
-        <label class="block text-sm font-semibold mb-2">Bericht *</label> <textarea name="bericht" rows="4" required placeholder="Uw bericht..." class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"></textarea>
-       </div>
-       <div class="form-status" id="contact-status"></div><button type="submit" class="w-full px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition"> Versturen </button>
-      </form>
-     </div>
-    </div>
-   </section><!-- Footer -->
-   <footer class="bg-gray-950 text-gray-400 py-8 border-t border-gray-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-     <p>© 2025 Glans en Klasse. Alle rechten voorbehouden.</p>
-    </div>
-   </footer><!-- Chat Widget -->
-   <div id="chat-widget" class="chat-widget"><button id="chat-toggle" class="w-14 h-14 rounded-full bg-teal-600 text-white shadow-lg hover:bg-teal-700 transition flex items-center justify-center" title="Chat met ons"> <i data-lucide="message-circle" style="width:24px;height:24px;"></i> </button>
-   </div>
-   <div id="chat-panel" class="chat-panel hidden shadow-xl">
-    <div class="h-full flex flex-col"><!-- Chat Header -->
-     <div class="bg-teal-600 text-white p-4 flex items-center justify-between">
-      <div>
-       <h3 class="font-bold">Glans &amp; Klasse Support</h3>
-       <p class="text-xs text-teal-100">Online nu</p>
-      </div><button id="chat-close" class="p-2 hover:bg-teal-700 rounded-lg transition"> <i data-lucide="x" style="width:20px;height:20px;"></i> </button>
-     </div><!-- Messages Area -->
-     <div id="chat-messages" class="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3">
-      <div class="chat-bubble bg-white rounded-lg p-3 shadow-sm">
-       <p class="text-sm text-gray-900">Hoi 👋 Ik ben de Glans &amp; Klasse assistent. Hoe kan ik je helpen?</p>
+    </section>
+
+    <section id="diensten">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <h2>Diensten</h2>
+            <p class="muted">Dynamisch geladen uit het Glans en Klasse beheersysteem.</p>
+          </div>
+        </div>
+        <div id="services" class="grid"><article class="card loading">Diensten laden</article></div>
       </div>
-     </div><!-- Quick Actions -->
-     <div id="chat-actions" class="p-4 bg-white border-t border-gray-200 space-y-2"><button class="chat-action w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition text-sm font-medium text-gray-800" data-action="prijzen">💰 Prijzen</button> <button class="chat-action w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition text-sm font-medium text-gray-800" data-action="diensten">🧼 Diensten</button> <button class="chat-action w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition text-sm font-medium text-gray-800" data-action="offerte">📋 Offerte</button> <button class="chat-action w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 transition text-sm font-medium text-gray-800" data-action="contact">☎️ Contact</button>
-     </div>
+    </section>
+
+    <section id="offerte">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <h2>Aanvragen</h2>
+            <p class="muted">Offertes, contactberichten en reviews worden direct opgeslagen in de administratie.</p>
+          </div>
+        </div>
+        <div class="forms">
+          <form id="quoteForm">
+            <h3>Offerte aanvragen</h3>
+            <label>Naam<input name="naam" autocomplete="name" required></label>
+            <label>Email<input name="email" type="email" autocomplete="email" required></label>
+            <label>Telefoon<input name="telefoon" autocomplete="tel" required></label>
+            <label>Dienst<select name="dienst_id" id="quoteService"></select></label>
+            <label>Beschrijving<textarea name="beschrijving" required></textarea></label>
+            <button class="btn" type="submit">Offerte versturen</button>
+            <div class="status" role="status"></div>
+          </form>
+
+          <form id="contactForm">
+            <h3>Contact</h3>
+            <label>Naam<input name="naam" autocomplete="name" required></label>
+            <label>Email<input name="email" type="email" autocomplete="email" required></label>
+            <label>Bericht<textarea name="bericht" required></textarea></label>
+            <button class="btn" type="submit">Bericht versturen</button>
+            <div class="status" role="status"></div>
+          </form>
+
+          <form id="reviewForm">
+            <h3>Review plaatsen</h3>
+            <label>Naam<input name="naam" autocomplete="name" required></label>
+            <label>Rating<select name="rating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
+            <label>Bericht<textarea name="bericht" required></textarea></label>
+            <button class="btn" type="submit">Review versturen</button>
+            <div class="status" role="status"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <h2>Reviews</h2>
+            <p class="muted">Alleen goedgekeurde reviews worden publiek getoond.</p>
+          </div>
+        </div>
+        <div id="reviewsList" class="grid"><article class="card loading">Reviews laden</article></div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="shell company-grid">
+        <article class="card">
+          <h2>Contactgegevens</h2>
+          <p><strong data-company-name>Glans en Klasse</strong></p>
+          <p id="companyAddress" class="muted">Laden...</p>
+          <p id="companyPhones"></p>
+          <p id="companyEmails"></p>
+          <div class="links" id="companyLinks"></div>
+        </article>
+        <article class="card">
+          <h2>Openingstijden</h2>
+          <div id="openingHours" class="muted">Laden...</div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <strong data-company-name>Glans en Klasse</strong><br>
+      <span>glansenklasse.nl - gekoppeld aan Google Apps Script API.</span>
     </div>
-   </div>
-  </div>
+  </footer>
+
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbziTUnslu-pvOi7S2LSAjmveWGMWB21Srl3TcnsO5xFEVb_4cjBMYBvbv-_nBn_Z-Y/exec';
-    const CACHE_KEY = 'glans_favorites';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzXjFFRZnekhjsO6MMOck43V5DANf3EJ12u-QJkc09NYFTF6QY7a6Tm8zi-QN3F-K9y/exec';
+    const state = { services: [] };
 
-    // Hardcoded services database with categories
-    const SERVICES_DB = [
-      { id: 1, titel: 'Move-Out Cleaning XS', beschrijving: 'Schoonmaak tot 50m²', prijs: 85, categorie: 'Move-Out Cleaning', maat: 'XS', tags: 'verhuizing klein' },
-      { id: 2, titel: 'Move-Out Cleaning S', beschrijving: 'Schoonmaak 50-100m²', prijs: 150, categorie: 'Move-Out Cleaning', maat: 'S', tags: 'verhuizing' },
-      { id: 3, titel: 'Move-Out Cleaning M', beschrijving: 'Schoonmaak 100-150m²', prijs: 220, categorie: 'Move-Out Cleaning', maat: 'M', tags: 'verhuizing medium' },
-      { id: 4, titel: 'Move-Out Cleaning L', beschrijving: 'Schoonmaak 150-250m²', prijs: 320, categorie: 'Move-Out Cleaning', maat: 'L', tags: 'verhuizing groot' },
-      { id: 5, titel: 'Move-Out Cleaning XL', beschrijving: 'Schoonmaak 250m²+', prijs: 450, categorie: 'Move-Out Cleaning', maat: 'XL', tags: 'verhuizing xl' },
-      { id: 6, titel: 'Post-Construction XS', beschrijving: 'Reinigt bouwresten klein', prijs: 95, categorie: 'Post-Construction', maat: 'XS', tags: 'bouw verbouwing' },
-      { id: 7, titel: 'Post-Construction M', beschrijving: 'Reinigt bouwresten medium', prijs: 250, categorie: 'Post-Construction', maat: 'M', tags: 'bouw' },
-      { id: 8, titel: 'Post-Construction XL', beschrijving: 'Reinigt bouwresten groot', prijs: 550, categorie: 'Post-Construction', maat: 'XL', tags: 'bouw groot' },
-      { id: 9, titel: 'Airbnb Turnover XS', beschrijving: 'Reiniging tussen gasten klein', prijs: 75, categorie: 'Airbnb Turnover', maat: 'XS', tags: 'airbnb toerisme' },
-      { id: 10, titel: 'Airbnb Turnover M', beschrijving: 'Reiniging tussen gasten medium', prijs: 200, categorie: 'Airbnb Turnover', maat: 'M', tags: 'airbnb' },
-      { id: 11, titel: 'Office Cleaning XS', beschrijving: 'Kantoor reiniging klein', prijs: 120, categorie: 'Office Cleaning', maat: 'XS', tags: 'kantoor bedrijf' },
-      { id: 12, titel: 'Office Cleaning L', beschrijving: 'Kantoor reiniging groot', prijs: 400, categorie: 'Office Cleaning', maat: 'L', tags: 'kantoor' },
-      { id: 13, titel: 'Office Deep Clean M', beschrijving: 'Diepte reiniging kantoor', prijs: 300, categorie: 'Office Deep Clean', maat: 'M', tags: 'diep kantoor' },
-      { id: 14, titel: 'Oven Cleaning', beschrijving: 'Professionele oven reiniging', prijs: 85, categorie: 'Special Cleaning', maat: 'M', tags: 'oven schoonmaken' },
-      { id: 15, titel: 'Carpet Cleaning', beschrijving: 'Tapijt- en stoffering reiniging', prijs: 150, categorie: 'Special Cleaning', maat: 'M', tags: 'tapijt stof' },
-      { id: 16, titel: 'Sofa Cleaning 2-seater', beschrijving: 'Bank reiniging 2 persoons', prijs: 120, categorie: 'Special Cleaning', maat: 'M', tags: 'bank sofa' },
-      { id: 17, titel: 'Sofa Cleaning 3-seater', beschrijving: 'Bank reiniging 3 persoons', prijs: 180, categorie: 'Special Cleaning', maat: 'L', tags: 'bank sofa' },
-      { id: 18, titel: 'Car Cleaning Interior', beschrijving: 'Auto interieur schoon', prijs: 95, categorie: 'Car Cleaning', maat: 'M', tags: 'auto car' },
-      { id: 19, titel: 'Car Cleaning Full Detail', beschrijving: 'Volledige auto detailing', prijs: 220, categorie: 'Car Cleaning', maat: 'L', tags: 'auto detail' },
-      { id: 20, titel: 'Pressure Wash Small', beschrijving: 'Hogedrukspuiten klein', prijs: 110, categorie: 'Outdoor Cleaning', maat: 'S', tags: 'buiten druk' },
-      { id: 21, titel: 'Garden Furniture Clean', beschrijving: 'Tuinmeubels schoonmaken', prijs: 140, categorie: 'Outdoor Cleaning', maat: 'M', tags: 'tuin' },
-      { id: 22, titel: 'Ironing Service', beschrijving: 'Strijkservice per uur', prijs: 35, categorie: 'Extra Services', maat: 'XS', tags: 'strijken' },
-      { id: 23, titel: 'Wheelie Bin Clean', beschrijving: 'Grote prullenbak reinigen', prijs: 45, categorie: 'Extra Services', maat: 'XS', tags: 'bak schoonmaken' },
-      { id: 24, titel: 'Staircase Cleaning L', beschrijving: 'Trappenhuis reiniging', prijs: 280, categorie: 'Staircase Cleaning', maat: 'L', tags: 'trap' },
-      { id: 25, titel: 'Lift Cleaning Standard', beschrijving: 'Lift reiniging standaard', prijs: 160, categorie: 'Lift Cleaning', maat: 'M', tags: 'lift' },
-    ];
-
-    const defaultConfig = {
-      hero_title: 'Glans en Klasse',
-      hero_subtitle: 'Professionele schoonmaakdiensten voor een stralend resultaat. Wij brengen glans in elk detail.',
-      cta_text: 'Ontdek Diensten',
-      about_title: 'Over Ons',
-      about_text: 'Bij Glans en Klasse geloven wij dat een schone omgeving het verschil maakt. Met ons ervaren team leveren wij betrouwbare schoonmaakdiensten aan particulieren en bedrijven door heel Nederland.',
-      contact_title: 'Neem Contact Op',
-      primary_color: '#0f766e',
-      accent_color: '#c9a227'
-    };
-
-    let appState = {
-      services: SERVICES_DB,
-      company: null,
-      reviews: [],
-      filteredServices: SERVICES_DB,
-      favorites: JSON.parse(localStorage.getItem(CACHE_KEY) || '[]'),
-      showFavoritesOnly: false
-    };
-
-    function escapeHtml(str) {
-      return String(str ?? '').replace(/[&<>"']/g, m => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
-      }[m]));
-    }
-
-    // Favorites Management
-    function toggleFavorite(serviceId) {
-      const idx = appState.favorites.indexOf(serviceId);
-      if (idx > -1) {
-        appState.favorites.splice(idx, 1);
-      } else {
-        appState.favorites.push(serviceId);
-      }
-      localStorage.setItem(CACHE_KEY, JSON.stringify(appState.favorites));
-      renderServices();
-    }
-
-    function isFavorite(serviceId) {
-      return appState.favorites.includes(serviceId);
-    }
-
-    // Search & Filter
-    function applyFilters() {
-      const search = document.getElementById('search-input').value.toLowerCase();
-      const category = document.getElementById('category-filter').value;
-      const size = document.getElementById('size-filter').value;
-      const maxPrice = Number(document.getElementById('price-filter').value);
-
-      appState.filteredServices = appState.services.filter(s => {
-        const matchSearch = !search || s.titel.toLowerCase().includes(search) || 
-                           s.beschrijving.toLowerCase().includes(search) || 
-                           (s.tags && s.tags.toLowerCase().includes(search));
-        const matchCategory = !category || s.categorie === category;
-        const matchSize = !size || s.maat === size;
-        const matchPrice = Number(s.prijs) <= maxPrice;
-        const matchFavorites = !appState.showFavoritesOnly || isFavorite(s.id);
-        return matchSearch && matchCategory && matchSize && matchPrice && matchFavorites;
-      });
-
-      renderServices();
-    }
-
-    // Render Services
-    function renderServices() {
-      const grid = document.getElementById('services-grid');
-      if (!appState.filteredServices.length) {
-        grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">Geen diensten gevonden</div>';
-        lucide.createIcons();
-        return;
-      }
-
-      grid.innerHTML = appState.filteredServices.map(s => `
-        <div class="bg-white rounded-xl p-6 border border-gray-200 card-hover">
-          <div class="flex items-start justify-between mb-3">
-            <div>
-              <span class="text-xs font-semibold text-teal-600 bg-teal-50 px-2 py-1 rounded">${escapeHtml(s.categorie)}</span>
-              <p class="text-xs text-gray-500 mt-1">Maat: ${escapeHtml(s.maat)}</p>
-            </div>
-            <button class="favorite-heart ${isFavorite(s.id) ? 'active' : ''}" data-id="${s.id}" style="cursor:pointer;">
-              <i data-lucide="heart" style="width:20px;height:20px;"></i>
-            </button>
-          </div>
-          <h3 class="font-bold text-gray-900 mb-2">${escapeHtml(s.titel)}</h3>
-          <p class="text-gray-600 text-sm mb-4">${escapeHtml(s.beschrijving)}</p>
-          <div class="flex items-center justify-between">
-            <p class="font-bold text-teal-600 text-lg">€${Number(s.prijs).toFixed(2)}</p>
-            <button class="share-btn text-gray-500 hover:text-teal-600 transition p-2" data-id="${s.id}" title="Delen">
-              <i data-lucide="share-2" style="width:18px;height:18px;"></i>
-            </button>
-          </div>
-        </div>
-      `).join('');
-
-      // Attach event listeners
-      document.querySelectorAll('.favorite-heart').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.preventDefault();
-          toggleFavorite(Number(btn.dataset.id));
-        });
-      });
-
-      document.querySelectorAll('.share-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
-          const service = appState.services.find(s => s.id === Number(btn.dataset.id));
-          const text = `${service.titel} - €${service.prijs} - ${service.categorie}`;
-          if (navigator.share) {
-            navigator.share({ title: 'Glans & Klasse', text });
-          } else {
-            navigator.clipboard.writeText(text);
-            alert('Service gekopieerd naar klembord!');
-          }
-        });
-      });
-
-      lucide.createIcons();
-    }
-
-    // Chat Logic
-    const chatResponses = {
-      prijzen: 'Onze prijzen variëren van €35 voor extra services tot €550 voor grote projecten. De meeste huishoudelijke schoonmaak begint rond €85. Wilt u een persoonlijke offerte? Klik op "Offerte" hieronder! 💰',
-      diensten: 'We bieden 25+ diensten: Move-Out Cleaning, Kantoor Reiniging, Diepte Reiniging, Specialistische diensten (oven, tapijt, bank), Auto detailing, en meer. Wil je meer details? Scroll omhoog! 🧼',
-      offerte: 'U kunt direct een offerte aanvragen via het formulier op deze pagina. Vul uw gegevens in en we sturen u een offerte binnen 24 uur! 📋',
-      contact: 'Bel ons op +31 6 12345678 of mail naar info@glansenklasse.nl. We staan klaar! ☎️'
-    };
-
-    function addChatMessage(text, isBot = false) {
-      const container = document.getElementById('chat-messages');
-      const bubble = document.createElement('div');
-      bubble.className = `chat-bubble ${isBot ? 'bg-white' : 'bg-teal-100 ml-auto max-w-xs'} rounded-lg p-3 shadow-sm`;
-      bubble.innerHTML = `<p class="text-sm ${isBot ? 'text-gray-900' : 'text-gray-800'}">${text}</p>`;
-      container.appendChild(bubble);
-      container.scrollTop = container.scrollHeight;
-    }
-
-    // Event Listeners
-    document.getElementById('search-input').addEventListener('input', applyFilters);
-    document.getElementById('category-filter').addEventListener('change', applyFilters);
-    document.getElementById('size-filter').addEventListener('change', applyFilters);
-    document.getElementById('price-filter').addEventListener('input', e => {
-      document.getElementById('price-display').textContent = e.target.value;
-      applyFilters();
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      const nav = document.getElementById('mainNav');
+      const open = nav.classList.toggle('open');
+      document.getElementById('menuToggle').setAttribute('aria-expanded', String(open));
     });
 
-    document.getElementById('reset-filters').addEventListener('click', () => {
-      document.getElementById('search-input').value = '';
-      document.getElementById('category-filter').value = '';
-      document.getElementById('size-filter').value = '';
-      document.getElementById('price-filter').value = '800';
-      document.getElementById('price-display').textContent = '800';
-      appState.showFavoritesOnly = false;
-      document.getElementById('favorites-toggle').classList.remove('bg-teal-50', 'border-teal-600', 'text-teal-600');
-      document.getElementById('favorites-toggle').classList.add('border-teal-600', 'text-teal-600');
-      applyFilters();
-    });
-
-    document.getElementById('favorites-toggle').addEventListener('click', () => {
-      appState.showFavoritesOnly = !appState.showFavoritesOnly;
-      const btn = document.getElementById('favorites-toggle');
-      if (appState.showFavoritesOnly) {
-        btn.classList.add('bg-teal-50');
-      } else {
-        btn.classList.remove('bg-teal-50');
-      }
-      applyFilters();
-    });
-
-    // Chat Widget
-    document.getElementById('chat-toggle').addEventListener('click', () => {
-      document.getElementById('chat-panel').classList.toggle('hidden');
-    });
-
-    document.getElementById('chat-close').addEventListener('click', () => {
-      document.getElementById('chat-panel').classList.add('hidden');
-    });
-
-    document.querySelectorAll('.chat-action').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const action = btn.dataset.action;
-        addChatMessage(btn.textContent.trim());
-        setTimeout(() => {
-          addChatMessage(chatResponses[action] || 'Ik begrijp uw vraag niet. Kunt u het anders formuleren?', true);
-        }, 300);
-      });
-    });
-
-    // Populate categories
-    const categories = [...new Set(SERVICES_DB.map(s => s.categorie))];
-    const catSelect = document.getElementById('category-filter');
-    categories.forEach(cat => {
-      const opt = document.createElement('option');
-      opt.value = cat;
-      opt.textContent = cat;
-      catSelect.appendChild(opt);
-    });
-
-    // API Functions (voor toekomstige backend integratie)
     async function apiGet(action, params = {}) {
       const url = new URL(API_URL);
       url.searchParams.set('action', action);
-      Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-      try {
-        const res = await fetch(url.toString());
-        const json = await res.json();
-        if (json.status !== 'success') throw new Error(json.message || 'API Error');
-        return json.data;
-      } catch (err) {
-        console.error('API Error:', err);
-        return null;
-      }
+      Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+      const response = await fetch(url.toString());
+      const json = await response.json();
+      if (json.status !== 'success') throw new Error(json.message || 'API fout');
+      return json.data;
     }
 
     async function apiPost(action, payload = {}) {
       const body = new URLSearchParams();
-      Object.entries(payload).forEach(([k, v]) => body.set(k, v ?? ''));
+      Object.entries(payload).forEach(([key, value]) => body.set(key, value ?? ''));
+      const response = await fetch(`${API_URL}?action=${encodeURIComponent(action)}`, { method: 'POST', body });
+      const json = await response.json();
+      if (json.status !== 'success') throw new Error(json.message || 'API fout');
+      return json.data;
+    }
+
+    function formData(form) { return Object.fromEntries(new FormData(form).entries()); }
+    function setStatus(form, message, ok) {
+      const box = form.querySelector('.status');
+      box.textContent = message;
+      box.className = 'status ' + (ok ? 'ok' : 'error');
+    }
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
+    }
+
+    function renderCompany(company) {
+      document.querySelectorAll('[data-company-name]').forEach(el => el.textContent = company.bedrijfsNaam || 'Glans en Klasse');
+      document.getElementById('companyAddress').textContent = [company.adres, company.postcode, company.stad].filter(Boolean).join(', ') || 'Adres nog niet ingevuld';
+      document.getElementById('companyPhones').innerHTML = [company.telefoon1, company.telefoon2].filter(Boolean).map(x => `<a href="tel:${escapeHtml(x)}">${escapeHtml(x)}</a>`).join('<br>') || 'Telefoon nog niet ingevuld';
+      document.getElementById('companyEmails').innerHTML = [company.email1, company.email2, company.email3].filter(Boolean).map(x => `<a href="mailto:${escapeHtml(x)}">${escapeHtml(x)}</a>`).join('<br>') || 'Email nog niet ingevuld';
+      const links = [['Instagram', company.instagram], ['LinkedIn', company.linkedin], ['Facebook', company.facebook], ['TikTok', company.tiktok], ['Website', company.website], ['Link 1', company.externeLink1], ['Link 2', company.externeLink2]].filter(item => item[1]);
+      document.getElementById('companyLinks').innerHTML = links.map(([label, url]) => `<a class="link-chip" href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`).join('');
+      renderOpeningHours(company.openingstijden);
+    }
+
+    function renderOpeningHours(value) {
+      const box = document.getElementById('openingHours');
       try {
-        const res = await fetch(`${API_URL}?action=${encodeURIComponent(action)}`, { method: 'POST', body });
-        const json = await res.json();
-        if (json.status !== 'success') throw new Error(json.message || 'API Error');
-        return json.data;
-      } catch (err) {
-        console.error('API Error:', err);
-        return null;
+        const data = JSON.parse(value || '{}');
+        box.innerHTML = Object.entries(data).map(([day, hours]) => `<p><strong>${escapeHtml(day)}</strong>: ${escapeHtml(hours)}</p>`).join('');
+      } catch {
+        box.textContent = value || 'Openingstijden nog niet ingevuld';
       }
     }
 
-    function showStatus(elementId, message, type = 'loading') {
-      const el = document.getElementById(elementId);
-      el.textContent = message;
-      el.className = `form-status status-${type}`;
+    function renderServices(services) {
+      state.services = services || [];
+      document.getElementById('serviceCount').textContent = state.services.length;
+      document.getElementById('services').innerHTML = state.services.length ? state.services.map(service => `
+        <article class="card">
+          <h3>${escapeHtml(service.titel)}</h3>
+          <p class="muted">${escapeHtml(service.beschrijving)}</p>
+          <p class="price">Vanaf EUR ${Number(service.prijs || 0).toFixed(2)}</p>
+        </article>
+      `).join('') : '<article class="card">Geen diensten gevonden.</article>';
+      document.getElementById('quoteService').innerHTML = '<option value="">Geen specifieke dienst</option>' + state.services.map(service => `<option value="${escapeHtml(service.id)}">${escapeHtml(service.titel)}</option>`).join('');
     }
 
-    // Form Handlers
-    document.getElementById('quote-form').addEventListener('submit', async e => {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      btn.disabled = true;
-      showStatus('quote-status', '⏳ Verzenden...', 'loading');
-      
+    function renderReviews(reviews) {
+      document.getElementById('reviewCount').textContent = reviews.length;
+      document.getElementById('reviewsList').innerHTML = reviews.length ? reviews.map(review => `
+        <article class="card">
+          <div class="stars">${'★'.repeat(Number(review.rating || 0))}</div>
+          <p>${escapeHtml(review.bericht)}</p>
+          <strong>${escapeHtml(review.naam)}</strong>
+        </article>
+      `).join('') : '<article class="card">Nog geen goedgekeurde reviews.</article>';
+    }
+
+    async function boot() {
       try {
-        const data = Object.fromEntries(new FormData(form));
-        const res = await apiPost('submitOfferte', data);
+        const [company, services, reviews] = await Promise.all([apiGet('getBedrijf'), apiGet('getDiensten'), apiGet('getReviews')]);
+        renderCompany(company);
+        renderServices(services);
+        renderReviews(reviews);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    document.getElementById('quoteForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      setStatus(form, 'Versturen...', true);
+      try {
+        const result = await apiPost('submitOfferte', formData(form));
         form.reset();
-        showStatus('quote-status', `✓ Offerte verzonden! Ref: ${res?.id || 'OK'}`, 'success');
-        setTimeout(() => showStatus('quote-status', '', ''), 5000);
-      } catch (err) {
-        showStatus('quote-status', `✗ Er is een fout opgetreden`, 'error');
-      } finally {
-        btn.disabled = false;
+        setStatus(form, `Ontvangen. Referentie: ${result.id}`, true);
+      } catch (error) {
+        setStatus(form, error.message, false);
       }
     });
 
-    document.getElementById('contact-form').addEventListener('submit', async e => {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      btn.disabled = true;
-      showStatus('contact-status', '⏳ Verzenden...', 'loading');
-      
+    document.getElementById('contactForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      setStatus(form, 'Versturen...', true);
       try {
-        const data = Object.fromEntries(new FormData(form));
-        const res = await apiPost('submitContact', data);
+        const result = await apiPost('submitContact', formData(form));
         form.reset();
-        showStatus('contact-status', `✓ Bericht verzonden!`, 'success');
-        setTimeout(() => showStatus('contact-status', '', ''), 5000);
-      } catch (err) {
-        showStatus('contact-status', `✗ Er is een fout opgetreden`, 'error');
-      } finally {
-        btn.disabled = false;
+        setStatus(form, `Bericht ontvangen. Referentie: ${result.id}`, true);
+      } catch (error) {
+        setStatus(form, error.message, false);
       }
     });
 
-    document.getElementById('review-form').addEventListener('submit', async e => {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      btn.disabled = true;
-      showStatus('review-status', '⏳ Verzenden...', 'loading');
-      
+    document.getElementById('reviewForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      setStatus(form, 'Versturen...', true);
       try {
-        const data = Object.fromEntries(new FormData(form));
-        const res = await apiPost('submitReview', data);
+        const result = await apiPost('submitReview', formData(form));
         form.reset();
-        showStatus('review-status', `✓ Review verzonden!`, 'success');
-        setTimeout(() => showStatus('review-status', '', ''), 5000);
-      } catch (err) {
-        showStatus('review-status', `✗ Er is een fout opgetreden`, 'error');
-      } finally {
-        btn.disabled = false;
+        setStatus(form, `${result.message}. Referentie: ${result.id}`, true);
+      } catch (error) {
+        setStatus(form, error.message, false);
       }
     });
 
-    // Populate dienst dropdown
-    const sel = document.getElementById('dienst_select');
-    sel.innerHTML = '<option value="">Kies een dienst</option>' + 
-      SERVICES_DB.map(s => `<option value="${escapeHtml(s.id)}">${escapeHtml(s.titel)}</option>`).join('');
-
-    // Element SDK Config
-    async function onConfigChange(config) {
-      const c = key => config[key] || defaultConfig[key];
-      document.getElementById('hero_title').textContent = c('hero_title');
-      document.getElementById('hero_subtitle').textContent = c('hero_subtitle');
-      document.getElementById('cta_button').textContent = c('cta_text');
-      document.getElementById('about_title').textContent = c('about_title');
-      document.getElementById('about_text').textContent = c('about_text');
-      document.getElementById('contact_title').textContent = c('contact_title');
-    }
-
-    function makeMutable(key) {
-      return {
-        get: () => window.elementSdk.config[key] || defaultConfig[key],
-        set: (v) => { window.elementSdk.config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
-      };
-    }
-
-    window.elementSdk.init({
-      defaultConfig,
-      onConfigChange,
-      mapToCapabilities: () => ({
-        recolorables: [makeMutable('primary_color'), makeMutable('accent_color')],
-        borderables: [],
-        fontEditable: undefined,
-        fontSizeable: undefined
-      }),
-      mapToEditPanelValues: (config) => new Map([
-        ['hero_title', config.hero_title || defaultConfig.hero_title],
-        ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
-        ['cta_text', config.cta_text || defaultConfig.cta_text],
-        ['about_title', config.about_title || defaultConfig.about_title],
-        ['about_text', config.about_text || defaultConfig.about_text],
-        ['contact_title', config.contact_title || defaultConfig.contact_title],
-        ['primary_color', config.primary_color || defaultConfig.primary_color],
-        ['accent_color', config.accent_color || defaultConfig.accent_color]
-      ])
-    });
-
-    // Initial render
-    renderServices();
-    lucide.createIcons();
+    boot();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f5617bac3831c04',t:'MTc3NzcxNTEyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
